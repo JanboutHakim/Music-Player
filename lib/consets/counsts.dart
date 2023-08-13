@@ -9,3 +9,9 @@ double getPaddingprictinge(double p,context){
  return MediaQuery.of(context).size.width*p/100;
 }
 
+
+//Textstyle function
+ TextStyle setStyle(Color c,double size ,bool isbold){
+ return TextStyle(fontSize: size,color: c,fontWeight: isbold ?  FontWeight.bold :  FontWeight.normal,fontFamily: 'Gilory-Bold',);
+ }
+
