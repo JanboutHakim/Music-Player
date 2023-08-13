@@ -3,3 +3,9 @@ import 'package:flutter/material.dart';
 var darkmodebackground=const Color.fromRGBO(9,18,39,1);
  var normalmodebackground=const Color.fromRGBO(234,240,255,1);
 
+
+ // prestinge of the screen function
+double getPaddingprictinge(double p,context){
+ return MediaQuery.of(context).size.width*p/100;
+}
+

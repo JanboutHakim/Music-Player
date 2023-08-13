@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/components/MyAppBar.dart';
+import 'package:music_player/consets/counsts.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -9,11 +11,21 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white,
-    
-      body: SafeArea(child:  Text('Home'),),
+    return Scaffold(backgroundColor: darkmodebackground,
 
-
+      body:
+         Column(
+      children: [
+           MyAppBar(onPressed: (){},),
+          ],
+        
+      ),
+    drawer: Drawer(
+      backgroundColor: Colors.red,
+    )
     );
+
+
+
   }
 }
