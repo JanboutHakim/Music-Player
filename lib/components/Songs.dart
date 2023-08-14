@@ -1,36 +1,98 @@
-import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
+import 'package:flutter/material.dart'
+    ;
 import 'package:music_player/consets/counsts.dart';
 import 'package:music_player/moudles/Song.dart';
+
 class Songs extends StatefulWidget {
-   Songs({super.key,
-  required this.song});
- Song song;
+  Songs({super.key, required this.song});
+
+  final Song song;
 
   @override
-  State<Songs> createState() => _SongsState();
+  _SongsState createState() => _SongsState();
 }
 
 class _SongsState extends State<Songs> {
+  late Future<Color?> _mainColorFuture;
+  Color _mainColor = Colors.white;
+
+  @override
+  void initState() {
+    super.initState();
+    _mainColorFuture = _getImageColor();
+  }
+
+  Future<Color?> _getImageColor() async {
+    final paletteGenerator = await PaletteGenerator.fromImageProvider(
+      AssetImage(widget.song.imagepath),
+      maximumColorCount: 1, // We only want the dominant color
+    );
+
+    return paletteGenerator.dominantColor?.color;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return
-          Container(width: MediaQuery.of(context).size.width*65/100,
+    return FutureBuilder<Color?>(
+      future: _mainColorFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          _mainColor = snapshot.data ?? Colors.black;
+        }
+
+        return Center(
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height*1.5/100, 0, 0),
+            width: MediaQuery.of(context).size.width * 65 / 100,
             child: ListTile(
-            title:  Image.asset(widget.song.imagepath,fit: BoxFit.cover
-              ,height: MediaQuery.of(context).size.width*50/100,width: 200,),
-              subtitle : Column(
-                children: [             Text(widget.song.title,style: setStyle(normalmodebackground, 16, true),),
-                  Text(widget.song.subtitle,style: setStyle(const Color.fromRGBO(165, 192, 255, 1), 10, false),),
+              title:
+                Container(
+                    decoration: BoxDecoration(color: darkmodebackground,borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _mainColor,
+                          blurStyle: BlurStyle.normal,
+                          spreadRadius: 0,
+                          blurRadius: 30,
+                          offset: Offset(0, 12),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                     borderRadius: BorderRadius.circular(8),
 
 
+
+
+                        child: Image.asset(
+
+                          widget.song.imagepath,
+                          fit: BoxFit.fitWidth,
+                          height: MediaQuery.of(context).size.width * 50 / 100,
+                          width: 200,
+                        ),
+                      ),
+
+                  ),
+
+
+              subtitle: Column(
+                children: [
+                  Text(
+                    widget.song.title,
+                    style: setStyle(normalmodebackground, 16, true),
+                  ),
+                  Text(
+                    widget.song.subtitle,
+                    style: setStyle(const Color.fromRGBO(165, 192, 255, 1), 10, false),
+                  ),
                 ],
-              )
-
-
-
+              ),
             ),
-
-
+          ),
+        );
+      },
     );
   }
 }

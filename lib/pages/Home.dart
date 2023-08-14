@@ -7,6 +7,8 @@ import 'package:music_player/consets/counsts.dart';
 import 'package:music_player/moudles/Song.dart';
 import 'package:music_player/moudles/Player.dart';
 import 'package:music_player/components/Songs.dart';
+import 'package:music_player/components/BottomNavbar.dart';
+import 'package:music_player/moudles/Player.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -28,7 +30,7 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           Container(
-            height: _screenHeight * 15 / 100,
+            height: _screenHeight * 10 / 100,
             child: MyAppBar(
               onPressed: () {},
               firsticon: LineIcons.equals,
@@ -43,20 +45,25 @@ class _HomeState extends State<Home> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Recommended For You', style: setStyle(normalmodebackground, 24, true)),
+                  Padding(padding: EdgeInsets.fromLTRB(_screenWidth * 0.05, 0, 0, 0),
+
+                           child: Text('Recommended For You', style: setStyle(normalmodebackground, 24, true)),
+                  ),
                 ],
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
-            height: _screenHeight * 27 / 100,
+         //   padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
+            height: _screenHeight * 29.5 / 100,
             child: ListView.builder(
               itemCount: Player.songs.length,
               scrollDirection: Axis.horizontal,
+
               itemBuilder: (context, index) {
-                Song s = Player.songs[index];
+                Song s= Player.songs[index];
                 return Songs(song: s);
+
               },
             ),
           ),
@@ -67,15 +74,15 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(_screenWidth * 0.05, 0, 0, 0),
                   child: Text('Your Play List', style: setStyle(normalmodebackground, 24, true)),
                 ),
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
-            height: _screenHeight * 27 / 100,
+          //  padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
+            height: _screenHeight * 29.5 / 100,
             child: ListView.builder(
               itemCount: Player.songs.length,
               scrollDirection: Axis.horizontal,
@@ -85,43 +92,10 @@ class _HomeState extends State<Home> {
               },
             ),
           ),
-          Container(
-            height: _screenHeight * 15 / 100,
-            child: Column(
-              children: [
-                Slider(
-                  activeColor: normalmodebackground,
-                  label: 'Hello',
-                  value: _slider,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _slider = newValue;
-                    });
-                  },
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: _screenWidth*8/100),
-
-                  child: Row(
-                    children: [
-
-                      //    padding: EdgeInsets.symmetric(horizontal: _screenWidth*0.5),
-                      Image.asset('images/gym.jpg', fit: BoxFit.cover, width: _screenWidth*20/100),
-                      Column(
-                        children: [
-                          Text('data'),
-                        ],
-                      ),
-                      SizedBox(width: 10),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.co2)),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.co2)),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.co2)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          SizedBox(
+            height: _screenHeight*15/100,
+           child: BottomNavbar(song: Player.songs[2],)
+          )
         ],
       ),
       drawer: Drawer(
