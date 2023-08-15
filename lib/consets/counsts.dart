@@ -15,3 +15,5 @@ double getPaddingprictinge(double p,context){
  TextStyle setStyle(Color c,double size ,bool isbold){
  return TextStyle(fontSize: size,color: c,fontWeight: isbold ?  FontWeight.bold :  FontWeight.normal,fontFamily: 'Gilory-Bold',);
  }
+// format time
+format(Duration d) => d.toString().split('.').first.padLeft(8,"0");

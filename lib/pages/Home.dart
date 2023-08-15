@@ -9,6 +9,7 @@ import 'package:music_player/moudles/Player.dart';
 import 'package:music_player/components/Songs.dart';
 import 'package:music_player/components/BottomNavbar.dart';
 import 'package:music_player/moudles/Player.dart';
+import 'package:music_player/pages/PlayinSong.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,7 +19,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  double _slider = 0.0;
+  int _focusedIndex = -1;
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,7 @@ class _HomeState extends State<Home> {
 
               itemBuilder: (context, index) {
                 Song s= Player.songs[index];
-                return Songs(song: s);
+                return Songs(song: s,width:  60,onTab: (){},);
 
               },
             ),
@@ -84,11 +86,18 @@ class _HomeState extends State<Home> {
           //  padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
             height: _screenHeight * 29.5 / 100,
             child: ListView.builder(
+
               itemCount: Player.songs.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 Song s = Player.songs[index];
-                return Songs(song: s);
+
+                return Songs(song: s,width: 60,onTab: (){
+                  setState(() {
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=> PlayinSong(sng: index,)) );
+
+                           });
+                },);
               },
             ),
           ),
@@ -112,7 +121,7 @@ class _HomeState extends State<Home> {
               child: ListView(
                 children: [
                   DrawerItem(iconshape: Icons.person, text: 'Profile', onPressed: () => Navigator.pop(context)),
-                  DrawerItem(iconshape: LineIcons.heart, text: 'Liked Songs', onPressed: () {}),
+                  DrawerItem(iconshape: LineIcons.heart, text: 'Liked Songs', onPressed: (){} ),
                   DrawerItem(iconshape: Icons.message, text: 'Contact Us', onPressed: () {}),
                   DrawerItem(iconshape: Icons.language, text: 'Language', onPressed: () {}),
                   DrawerItem(iconshape: LineIcons.lightbulb, text: 'FAQs', onPressed: () {}),

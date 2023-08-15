@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   line_icons: ^2.0.3
   palette_generator: ^0.3.3+2
+  scroll_snap_list: ^0.9.1
+  scrollable_positioned_list: ^0.3.8
 
 dev_dependencies:
   flutter_test:

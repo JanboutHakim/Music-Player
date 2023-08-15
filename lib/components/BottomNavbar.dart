@@ -7,6 +7,7 @@ import 'package:music_player/moudles/Song.dart';
 class BottomNavbar extends StatefulWidget {
   Song song;
    BottomNavbar({super.key,required this.song});
+  double _slider=0.0;
 
   @override
   State<BottomNavbar> createState() => _BottomNavbarState();
@@ -15,16 +16,15 @@ class BottomNavbar extends StatefulWidget {
 class _BottomNavbarState extends State<BottomNavbar> {
   @override
   Widget build(BuildContext context) {
-    double _slider=0.0;
     return  Column(
         children: [
           Slider(
             activeColor: normalmodebackground,
             label: 'Hello',
-            value: _slider,
+            value: widget._slider,
             onChanged: (newValue) {
               setState(() {
-                _slider = newValue;
+                widget._slider = newValue;
               });
             },
           ),

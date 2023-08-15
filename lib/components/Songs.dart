@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:flutter/material.dart'
-    ;
 import 'package:music_player/consets/counsts.dart';
 import 'package:music_player/moudles/Song.dart';
 
 class Songs extends StatefulWidget {
-  Songs({super.key, required this.song});
+  Songs({super.key, required this.song, required this.width,required this.onTab});
+  void Function()  onTab;
 
+  final double width;
   final Song song;
 
   @override
@@ -41,42 +42,37 @@ class _SongsState extends State<Songs> {
           _mainColor = snapshot.data ?? Colors.black;
         }
 
-        return Center(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height*1.5/100, 0, 0),
-            width: MediaQuery.of(context).size.width * 65 / 100,
+        return  Container(
+            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 1.5 / 100),
+            width: MediaQuery.of(context).size.width * widget.width / 100,
             child: ListTile(
-              title:
-                Container(
-                    decoration: BoxDecoration(color: darkmodebackground,borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: _mainColor,
-                          blurStyle: BlurStyle.normal,
-                          spreadRadius: 0,
-                          blurRadius: 30,
-                          offset: Offset(0, 12),
-                        ),
-                      ],
+                      onTap:(){
+                        widget.onTab();
+                      },
+
+              title: Container(
+                decoration: BoxDecoration(
+                  color: darkmodebackground,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _mainColor,
+                      spreadRadius: 0,
+                      blurRadius: 30,
+                      offset: Offset(0, 12),
                     ),
-                    child: ClipRRect(
-                     borderRadius: BorderRadius.circular(8),
-
-
-
-
-                        child: Image.asset(
-
-                          widget.song.imagepath,
-                          fit: BoxFit.fitWidth,
-                          height: MediaQuery.of(context).size.width * 50 / 100,
-                          width: 200,
-                        ),
-                      ),
-
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    widget.song.imagepath,
+                    fit: BoxFit.fitWidth,
+                    height: MediaQuery.of(context).size.width * (widget.width - 10) / 100,
+                    width: 200,
                   ),
-
-
+                ),
+              ),
               subtitle: Column(
                 children: [
                   Text(
@@ -90,7 +86,7 @@ class _SongsState extends State<Songs> {
                 ],
               ),
             ),
-          ),
+
         );
       },
     );

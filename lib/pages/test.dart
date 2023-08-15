@@ -1,5 +1,6 @@
 
 import 'package:palette_generator/palette_generator.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:flutter/material.dart';
 class Test extends StatefulWidget {
   const Test({super.key});
@@ -26,7 +27,7 @@ class _TestState extends State<Test> {
           (height: 200,
           width: 200,
           color: maincolor,
-          child: Text('HELLO'),
+
         ),
       ),
     );
