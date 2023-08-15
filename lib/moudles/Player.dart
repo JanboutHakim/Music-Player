@@ -8,7 +8,11 @@ class Player  {
      Song(imagepath: 'images/apart.jpg',title: 'Apart',subtitle: 'Somone'),
      Song(imagepath: 'images/beliver.jpg',title: 'Beliver',subtitle: 'Imagine Dragons'),
      Song(imagepath: 'images/origins.jpg',title: 'Origins',subtitle: 'Imagine Dragons'),
-     Song(imagepath: 'images/hope.jpg',title: 'Hope',subtitle: 'Hope'),];
+     Song(imagepath: 'images/hope.jpg',title: 'Hope',subtitle: 'Hope'),
+    Song(imagepath: 'images/apart.jpg',title: 'Apart',subtitle: 'Somone'),
+    Song(imagepath: 'images/beliver.jpg',title: 'Beliver',subtitle: 'Imagine Dragons'),
+    Song(imagepath: 'images/origins.jpg',title: 'Origins',subtitle: 'Imagine Dragons'),
+    Song(imagepath: 'images/hope.jpg',title: 'Hope',subtitle: 'Hope'),];
 
   List<String> imagepaths=[
     'images/apart.jpg',

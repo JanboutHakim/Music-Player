@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
               child: ListView(
                 children: [
                   DrawerItem(iconshape: Icons.person, text: 'Profile', onPressed: () => Navigator.pop(context)),
-                  DrawerItem(iconshape: LineIcons.heart, text: 'Liked Songs', onPressed: (){} ),
+                  DrawerItem(iconshape: LineIcons.heart, text: 'Liked Songs', onPressed: (){Navigator.pushNamed(context, '/likedsongs');} ),
                   DrawerItem(iconshape: Icons.message, text: 'Contact Us', onPressed: () {}),
                   DrawerItem(iconshape: Icons.language, text: 'Language', onPressed: () {}),
                   DrawerItem(iconshape: LineIcons.lightbulb, text: 'FAQs', onPressed: () {}),
