@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:music_player/components/DrawerAppBar.dart';
@@ -8,7 +9,6 @@ import 'package:music_player/moudles/Song.dart';
 import 'package:music_player/moudles/Player.dart';
 import 'package:music_player/components/Songs.dart';
 import 'package:music_player/components/BottomNavbar.dart';
-import 'package:music_player/moudles/Player.dart';
 import 'package:music_player/pages/PlayinSong.dart';
 
 class Home extends StatefulWidget {
@@ -19,8 +19,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _focusedIndex = -1;
-
+  // Indicate if application has permission to the library.
+  int indexHome = -1;
+  late AudioPlayer player;
+  @override
+  void initState() {
+    super.initState();
+    player = AudioPlayer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +53,28 @@ class _HomeState extends State<Home> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(padding: EdgeInsets.fromLTRB(_screenWidth * 0.05, 0, 0, 0),
-
-                           child: Text('Recommended For You', style: setStyle(normalmodebackground, 24, true)),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(_screenWidth * 0.05, 0, 0, 0),
+                    child: Text('Recommended For You',
+                        style: setStyle(normalmodebackground, 24, true)),
                   ),
                 ],
               ),
             ),
           ),
           Container(
-         //   padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
+            //   padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
             height: _screenHeight * 29.5 / 100,
             child: ListView.builder(
               itemCount: Player.songs.length,
               scrollDirection: Axis.horizontal,
-
               itemBuilder: (context, index) {
-                Song s= Player.songs[index];
-                return Songs(song: s,width:  60,onTab: (){},);
-
+                Song s = Player.songs[index];
+                return Songs(
+                  song: s,
+                  width: 60,
+                  onTab: () {},
+                );
               },
             ),
           ),
@@ -77,34 +86,49 @@ class _HomeState extends State<Home> {
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(_screenWidth * 0.05, 0, 0, 0),
-                  child: Text('Your Play List', style: setStyle(normalmodebackground, 24, true)),
+                  child: Text('Your Play List',
+                      style: setStyle(normalmodebackground, 24, true)),
                 ),
               ],
             ),
           ),
           Container(
-          //  padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
+            //  padding: EdgeInsets.fromLTRB(_screenWidth * 0.1, 0, 0, 0),
             height: _screenHeight * 29.5 / 100,
             child: ListView.builder(
-
               itemCount: Player.songs.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 Song s = Player.songs[index];
-
-                return Songs(song: s,width: 60,onTab: (){
-                  setState(() {
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=> PlayinSong(sng: index,)) );
-
-                           });
-                },);
+                return Songs(
+                  song: s,
+                  width: 60,
+                  onTab: () {
+                    indexHome = index;
+                    setState(() {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return PlayinSong(
+                          playerpath: 'julia1.mp3',
+                          player: player,
+                          sng: index,
+                        );
+                      }));
+                    });
+                  },
+                );
               },
             ),
           ),
-          SizedBox(
-            height: _screenHeight*15/100,
-           child: BottomNavbar(song: Player.songs[2],)
-          )
+          indexHome == -1
+              ? SizedBox(
+                  height: _screenHeight * 15 / 100,
+                )
+              : SizedBox(
+                  height: _screenHeight * 15 / 100,
+                  child: BottomNavbar(
+                    song: Player.songs[indexHome],
+                  ))
         ],
       ),
       drawer: Drawer(
@@ -120,12 +144,32 @@ class _HomeState extends State<Home> {
             Expanded(
               child: ListView(
                 children: [
-                  DrawerItem(iconshape: Icons.person, text: 'Profile', onPressed: () => Navigator.pop(context)),
-                  DrawerItem(iconshape: LineIcons.heart, text: 'Liked Songs', onPressed: (){Navigator.pushNamed(context, '/likedsongs');} ),
-                  DrawerItem(iconshape: Icons.message, text: 'Contact Us', onPressed: () {}),
-                  DrawerItem(iconshape: Icons.language, text: 'Language', onPressed: () {}),
-                  DrawerItem(iconshape: LineIcons.lightbulb, text: 'FAQs', onPressed: () {}),
-                  DrawerItem(iconshape: Icons.settings, text: 'Setting', onPressed: () {}),
+                  DrawerItem(
+                      iconshape: Icons.person,
+                      text: 'Profile',
+                      onPressed: () => Navigator.pop(context)),
+                  DrawerItem(
+                      iconshape: LineIcons.heart,
+                      text: 'Liked Songs',
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/likedsongs');
+                      }),
+                  DrawerItem(
+                      iconshape: Icons.message,
+                      text: 'Contact Us',
+                      onPressed: () {}),
+                  DrawerItem(
+                      iconshape: Icons.language,
+                      text: 'Language',
+                      onPressed: () {}),
+                  DrawerItem(
+                      iconshape: LineIcons.lightbulb,
+                      text: 'FAQs',
+                      onPressed: () {}),
+                  DrawerItem(
+                      iconshape: Icons.settings,
+                      text: 'Setting',
+                      onPressed: () {}),
                 ],
               ),
             ),
@@ -134,5 +178,10 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
+  void setIndex(int index) {
+    setState(() {
+      indexHome = index;
+    });
+  }
+}
