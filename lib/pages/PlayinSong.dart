@@ -1,20 +1,16 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:music_player/components/Songs.dart';
+import 'package:music_player/widget/Songs.dart';
 import 'package:music_player/consets/counsts.dart';
 import 'package:music_player/moudles/Player.dart';
-import 'package:music_player/components/PlayingControl.dart';
+import 'package:music_player/widget/PlayingControl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PlayinSong extends StatefulWidget {
-  PlayinSong(
-      {Key? keyr,
-      required this.sng,
-      required this.playerpath,
-      required this.player});
-  final String playerpath;
+  PlayinSong({Key? keyr, required this.sng, required this.player});
+  final Songs sng;
   final AudioPlayer player;
-  int sng;
 
   @override
   State<PlayinSong> createState() => _PlayinSongState();
@@ -26,32 +22,27 @@ class _PlayinSongState extends State<PlayinSong> {
   IconData voice = LineIcons.volumeDown;
 
   Duration _duration = Duration.zero;
-  late AudioPlayer player;
   @override
   void initState() {
-    player = widget.player;
-    player.onPlayerStateChanged.listen((PlayerState s) {
-      if (s == PlayerState.playing) {
-        player.dispose();
-      }
-    });
-    player.play(AssetSource(widget.playerpath));
-    index = widget.sng;
+    durationupdate();
+    print('Hello $_duration');
+    checkPermissionStatus();
+    index = 5;
     super.initState();
-    player.onDurationChanged.listen((newDuration) {
-      setState(() {
-        _duration = newDuration;
-      });
-    });
-    player.onPositionChanged.listen((newPosition) {
-      setState(() {
-        _currenttime = newPosition;
+  }
+
+  void durationupdate() {
+    print('object');
+    setState(() {
+      widget.player.durationStream.listen((event) {
+        _duration = event ?? Duration(microseconds: 20);
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('hi');
     final double _screenWidth = MediaQuery.of(context).size.width;
     final double _screenHeight = MediaQuery.of(context).size.height;
 
@@ -65,7 +56,6 @@ class _PlayinSongState extends State<PlayinSong> {
               children: [
                 IconButton(
                   onPressed: () {
-                    player.stop();
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back,
@@ -81,7 +71,6 @@ class _PlayinSongState extends State<PlayinSong> {
           ),
           GestureDetector(
             onHorizontalDragEnd: (derction) {
-              print(index);
               if (derction.primaryVelocity! > 0) {
                 if (index == 0) {
                   setState(() {
@@ -108,14 +97,7 @@ class _PlayinSongState extends State<PlayinSong> {
               padding: EdgeInsets.fromLTRB(
                   0, _screenHeight * 1 / 100, 0, _screenHeight * 1 / 100),
               child: Container(
-                height: _screenHeight * 42 / 100,
-                child: Center(
-                    child: Songs(
-                  onTab: () {},
-                  song: Player.songs[index],
-                  width: 80,
-                )),
-              ),
+                  height: _screenHeight * 42 / 100, child: widget.sng),
             ),
           ),
           Container(
@@ -180,16 +162,32 @@ class _PlayinSongState extends State<PlayinSong> {
             value: _currenttime.inSeconds.toDouble(),
             onChanged: (value) {
               final position = Duration(seconds: value.toInt());
-              player.seek(position);
-              player.resume();
+              widget.player.seek(position);
             },
             activeColor: Colors.white,
           ),
-          PlayingControl(
-            player: player,
-          )
+          PlayingControl()
         ],
       ),
     );
+  }
+
+  Future<void> checkPermissionStatus() async {
+    final status = await Permission.storage.status;
+    if (status.isGranted) {
+      // Permission is already granted.
+    } else {
+      // Permission is not granted; you might want to request it.
+      await requestStoragePermission();
+    }
+  }
+
+  Future<void> requestStoragePermission() async {
+    final status = await Permission.storage.request();
+    if (status.isGranted) {
+      // Permission granted, you can now access the storage.
+    } else {
+      // Permission denied. Handle the case where the user didn't grant permission.
+    }
   }
 }

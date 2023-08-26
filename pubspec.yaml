@@ -39,8 +39,10 @@ dependencies:
   palette_generator: ^0.3.3+2
   scroll_snap_list: ^0.9.1
   scrollable_positioned_list: ^0.3.8
-  audioplayers: ^5.1.0
   on_audio_query: ^2.9.0
+  permission_handler: ^10.4.3
+  provider:
+  just_audio: ^0.9.34
 
 dev_dependencies:
   flutter_test:

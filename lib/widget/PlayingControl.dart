@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:music_player/pages/Home.dart';
 
 class PlayingControl extends StatefulWidget {
-  AudioPlayer player;
   PlayingControl({
-    required this.player,
     super.key,
   });
 
@@ -13,11 +11,9 @@ class PlayingControl extends StatefulWidget {
 }
 
 class _PlayingControlState extends State<PlayingControl> {
-  late AudioPlayer playerk;
   bool isPlaying = true;
   @override
   void initState() {
-    playerk = widget.player;
     super.initState();
   }
 
@@ -28,8 +24,10 @@ class _PlayingControlState extends State<PlayingControl> {
       children: [
         IconButton(
             iconSize: 60,
-            onPressed: () {},
-            icon: Icon(
+            onPressed: () {
+              player.previousIndex;
+            },
+            icon: const Icon(
               Icons.skip_previous,
               color: Colors.white,
               size: 60,
@@ -56,8 +54,10 @@ class _PlayingControlState extends State<PlayingControl> {
             )),
         IconButton(
             iconSize: 60,
-            onPressed: () {},
-            icon: Icon(
+            onPressed: () {
+              player.nextIndex;
+            },
+            icon: const Icon(
               Icons.skip_next,
               color: Colors.white,
               size: 60,
@@ -67,10 +67,10 @@ class _PlayingControlState extends State<PlayingControl> {
   }
 
   void playSong() async {
-    await playerk.resume();
+    player.play();
   }
 
   void stopSong() async {
-    await playerk.pause();
+    player.pause();
   }
 }

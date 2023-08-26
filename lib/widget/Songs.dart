@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:music_player/consets/counsts.dart';
 import 'package:music_player/moudles/Song.dart';
@@ -6,10 +7,12 @@ import 'package:music_player/moudles/Song.dart';
 class Songs extends StatefulWidget {
   Songs(
       {super.key,
+      required this.id,
       required this.song,
       required this.width,
       required this.onTab});
   final VoidCallback onTab;
+  final int id;
 
   final double width;
   final Song song;
@@ -30,7 +33,7 @@ class _SongsState extends State<Songs> {
 
   Future<Color?> _getImageColor() async {
     final paletteGenerator = await PaletteGenerator.fromImageProvider(
-      AssetImage(widget.song.imagepath),
+      AssetImage('images/apart.jpg'),
       maximumColorCount: 1, // We only want the dominant color
     );
 
@@ -68,16 +71,27 @@ class _SongsState extends State<Songs> {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  widget.song.imagepath,
-                  fit: BoxFit.fitWidth,
-                  height: MediaQuery.of(context).size.width *
-                      (widget.width - 10) /
-                      100,
-                  width: 200,
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.width *
+                        (widget.width - 10) /
+                        100,
+                    child: QueryArtworkWidget(
+                        nullArtworkWidget: Image.asset(
+                          'images/apart.jpg',
+                          width: MediaQuery.of(context).size.width *
+                              (widget.width - 10) /
+                              100,
+                          fit: BoxFit.fitWidth,
+                        ),
+                        errorBuilder: (p0, p1, p2) =>
+                            Image.asset('images/apart.jpg'),
+                        artworkFit: BoxFit.cover,
+                        artworkClipBehavior: Clip.none,
+                        artworkBorder: BorderRadius.zero,
+                        id: widget.id,
+                        type: ArtworkType.AUDIO),
+                  )),
             ),
             subtitle: Column(
               children: [

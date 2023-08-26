@@ -1,40 +1,25 @@
+import 'package:flutter/material.dart';
 import 'package:music_player/moudles/Song.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
-class Player {
-  //songs list
-  static List<Song> songs = [
-    Song(
-        imagepath: 'images/gym.jpg',
-        title: 'Gym Monster',
-        subtitle: 'Hero singer'),
-    Song(imagepath: 'images/apart.jpg', title: 'Apart', subtitle: 'Somone'),
-    Song(
-        imagepath: 'images/beliver.jpg',
-        title: 'Beliver',
-        subtitle: 'Imagine Dragons'),
-    Song(
-        imagepath: 'images/origins.jpg',
-        title: 'Origins',
-        subtitle: 'Imagine Dragons'),
-    Song(imagepath: 'images/hope.jpg', title: 'Hope', subtitle: 'Hope'),
-    Song(imagepath: 'images/apart.jpg', title: 'Apart', subtitle: 'Somone'),
-    Song(
-        imagepath: 'images/beliver.jpg',
-        title: 'Beliver',
-        subtitle: 'Imagine Dragons'),
-    Song(
-        imagepath: 'images/origins.jpg',
-        title: 'Origins',
-        subtitle: 'Imagine Dragons'),
-    Song(imagepath: 'images/hope.jpg', title: 'Hope', subtitle: 'Hope'),
-  ];
+class Player extends ChangeNotifier {
+  final OnAudioQuery _audioQuery = OnAudioQuery();
 
-  List<String> imagepaths = [
-    'images/apart.jpg',
-    'images/beliver.jpg'
-        'images/origins.jpg'
-        'images/hope.jpg'
-  ];
+  static List<SongModel> songs = [];
+  void getSong() async {
+    songs = await _audioQuery.querySongs();
+    notifyListeners();
+  }
+
+  static List<Song> loadedsong = [];
+  static List<Song> addsongs() {
+    for (SongModel song in songs) {
+      loadedsong.add(Song(
+          songpath: '/storage/emulated/0/${song.data}',
+          subtitle: song.artist!,
+          title: song.title));
+    }
+
+    return loadedsong;
+  }
 }
-
-// get the image main color

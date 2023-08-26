@@ -34,7 +34,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //    padding: EdgeInsets.symmetric(horizontal: _screenWidth*0.5),
-              Image.asset(widget.song.imagepath,
+              Image.asset('images/apart.jpg',
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width * 20 / 100),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
